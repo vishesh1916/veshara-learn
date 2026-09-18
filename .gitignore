@@ -1,0 +1,49 @@
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/cache
+
+# Testing
+/coverage
+
+# Next.js build output
+/.next/
+/out/
+
+# Production build files
+build
+dist
+
+# Misc
+.DS_Store
+*.pem
+
+# Local env files - NEVER commit secrets to git
+.env
+.env*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# SQLite local databases
+*.db
+*.db-journal
+prisma/dev.db
+prisma/dev.db-journal
+
+# Editor & System directories
+.idea/
+.vscode/
+*.swp
+*.swo
+.system_generated/
+.gemini/
