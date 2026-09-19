@@ -62,6 +62,18 @@ export default function CoursePlayerPage() {
   const [savingProgress, setSavingProgress] = React.useState<boolean>(false);
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
 
+  // Lock body scroll when mobile syllabus drawer is open
+  React.useEffect(() => {
+    if (sidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [sidebarOpen]);
+
   // Fetch real student progress from backend database
   React.useEffect(() => {
     let isMounted = true;
@@ -265,7 +277,6 @@ export default function CoursePlayerPage() {
         if (data.progressPercent === 100) {
           toast.success("🏆 100% Course Completed! Your certificate is unlocked!");
         }
-        router.refresh();
       }
     } catch (e) {
       console.warn("Sync progress notice:", e);
@@ -456,10 +467,10 @@ export default function CoursePlayerPage() {
           </div>
         </div>
 
-        {/* Right: Live Curriculum Sidebar */}
+        {/* Right: Live Curriculum Sidebar (Desktop fixed / Mobile slide-over drawer) */}
         <aside
-          className={`w-full lg:w-96 bg-white border-l border-border-custom p-6 flex flex-col justify-between overflow-y-auto ${
-            sidebarOpen ? "block" : "hidden lg:flex"
+          className={`fixed inset-y-0 right-0 z-50 w-80 sm:w-96 bg-white border-l border-border-custom p-6 flex flex-col justify-between overflow-y-auto transition-transform duration-300 ease-in-out lg:static lg:w-96 lg:translate-x-0 ${
+            sidebarOpen ? "translate-x-0 shadow-2xl" : "translate-x-full lg:translate-x-0"
           }`}
         >
           <div className="space-y-6">
@@ -468,9 +479,19 @@ export default function CoursePlayerPage() {
                 <span className="text-xs font-mono font-bold uppercase text-secondary">
                   Course Syllabus
                 </span>
-                <span className="text-xs font-mono font-bold text-primary">
-                  {distinctCompletedCount} / {allLessons.length} Done
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono font-bold text-primary">
+                    {distinctCompletedCount} / {allLessons.length} Done
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setSidebarOpen(false)}
+                    className="lg:hidden p-1 text-secondary hover:text-primary rounded"
+                    aria-label="Close syllabus"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
               <ProgressBar value={liveProgressPercent} />
             </div>
@@ -530,6 +551,7 @@ export default function CoursePlayerPage() {
 
                           <Link
                             href={`/dashboard/courses/${courseId}/lessons/${les.id}`}
+                            prefetch={true}
                             onClick={() => setSidebarOpen(false)}
                             className="flex-1 overflow-hidden"
                           >
@@ -549,6 +571,14 @@ export default function CoursePlayerPage() {
             </div>
           </div>
         </aside>
+
+        {/* Backdrop for mobile syllabus */}
+        {sidebarOpen && (
+          <div
+            onClick={() => setSidebarOpen(false)}
+            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-xs lg:hidden"
+          />
+        )}
       </div>
     </div>
   );

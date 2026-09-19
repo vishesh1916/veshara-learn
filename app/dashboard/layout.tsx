@@ -22,7 +22,12 @@ export default async function DashboardLayout({
   const email = session.user.email.toLowerCase();
   const user = await prisma.user.findUnique({
     where: { email },
-    include: { enrollments: true },
+    select: {
+      id: true,
+      name: true,
+      role: true,
+      enrollments: { select: { id: true }, take: 1 },
+    },
   });
 
   const isAdmin =

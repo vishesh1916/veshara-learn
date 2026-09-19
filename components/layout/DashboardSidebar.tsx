@@ -22,6 +22,29 @@ export function DashboardSidebar() {
   const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
+  // Lock body scroll when mobile drawer is open
+  React.useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  // Bulletproof sign out eliminating 404s
+  const handleSignOut = async () => {
+    try {
+      await signOut({ redirect: false });
+    } catch (e) {
+      console.error("Sign out error:", e);
+    } finally {
+      window.location.href = "/";
+    }
+  };
+
   const navItems = [
     { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
     { label: "My Courses", href: "/dashboard/courses/social-media-manager", icon: BookOpen },
@@ -34,7 +57,7 @@ export function DashboardSidebar() {
       {/* Mobile Top Header */}
       <div className="lg:hidden flex items-center justify-between px-5 py-3.5 bg-white border-b border-border-custom sticky top-0 z-30">
         <div className="flex items-center gap-2.5">
-          <Link href="/" className="font-serif font-bold text-lg text-primary uppercase tracking-tight">
+          <Link href="/" prefetch={true} className="font-serif font-bold text-lg text-primary uppercase tracking-tight">
             Veshara<span className="text-secondary font-light">.learn</span>
           </Link>
           <span className="text-[9px] font-mono font-bold uppercase tracking-wider bg-accent text-primary px-2 py-0.5 rounded border border-primary/20">
@@ -43,7 +66,7 @@ export function DashboardSidebar() {
         </div>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-1.5 text-primary hover:opacity-75 transition-opacity"
+          className="p-2 text-primary hover:opacity-75 transition-opacity cursor-pointer rounded-lg"
           aria-label="Toggle Dashboard Menu"
         >
           {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -53,22 +76,32 @@ export function DashboardSidebar() {
       {/* Sidebar Drawer / Fixed desktop */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 w-72 bg-white border-r border-border-custom flex flex-col justify-between transition-transform duration-300 ease-in-out lg:translate-x-0 shrink-0",
-          mobileOpen ? "translate-x-0" : "-translate-x-full lg:static"
+          "fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-border-custom flex flex-col justify-between transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 shrink-0",
+          mobileOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full"
         )}
       >
         <div>
           {/* Logo Brand Header */}
-          <div className="px-5 py-5 border-b border-border-custom">
-            <div className="flex items-center justify-between gap-3">
-              <Link href="/" className="inline-block">
+          <div className="px-5 py-5 border-b border-border-custom flex items-center justify-between">
+            <div className="flex items-center justify-between gap-3 w-full">
+              <Link href="/" prefetch={true} className="inline-block">
                 <span className="font-serif font-bold text-xl text-primary tracking-tight uppercase">
                   Veshara<span className="text-secondary font-light">.learn</span>
                 </span>
               </Link>
-              <span className="text-[10px] font-mono font-bold uppercase tracking-wider bg-accent text-primary px-2.5 py-0.5 rounded-full border border-primary/20 shrink-0 shadow-xs">
-                Student
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider bg-accent text-primary px-2.5 py-0.5 rounded-full border border-primary/20 shrink-0 shadow-xs">
+                  Student
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setMobileOpen(false)}
+                  className="lg:hidden p-1.5 text-secondary hover:text-primary"
+                  aria-label="Close menu"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -85,12 +118,13 @@ export function DashboardSidebar() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  prefetch={true}
                   onClick={() => setMobileOpen(false)}
                   className={cn(
-                    "flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-all",
+                    "flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-all touch-manipulation min-h-[44px]",
                     isActive
                       ? "bg-primary text-cream shadow-sm"
-                      : "text-secondary hover:text-primary hover:bg-[#F5F3EE]"
+                      : "text-secondary hover:text-primary hover:bg-[#F5F3EE] active:bg-[#ECEAE4]"
                   )}
                 >
                   <Icon className={cn("w-4 h-4", isActive ? "text-accent" : "text-secondary")} />
@@ -104,7 +138,7 @@ export function DashboardSidebar() {
         {/* User Profile & Logout Bottom section */}
         <div className="p-4 border-t border-border-custom bg-[#FAF9F5]">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-full bg-accent text-primary flex items-center justify-center font-bold text-sm border border-primary/20">
+            <div className="w-10 h-10 rounded-full bg-accent text-primary flex items-center justify-center font-bold text-sm border border-primary/20 shrink-0">
               {session?.user?.name ? session.user.name.charAt(0).toUpperCase() : "S"}
             </div>
             <div className="overflow-hidden">
@@ -120,14 +154,16 @@ export function DashboardSidebar() {
           <div className="flex items-center gap-2 pt-2 border-t border-border-custom/60">
             <Link
               href="/"
-              className="flex-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-2 rounded text-xs text-secondary hover:text-primary hover:bg-white transition-colors"
+              prefetch={true}
+              className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs text-secondary hover:text-primary hover:bg-white transition-colors min-h-[38px]"
             >
               <ExternalLink className="w-3.5 h-3.5" />
               <span>Website</span>
             </Link>
             <button
-              onClick={() => signOut({ callbackUrl: "/" })}
-              className="flex-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-2 rounded text-xs text-red-600 hover:bg-red-50 transition-colors"
+              type="button"
+              onClick={handleSignOut}
+              className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs text-red-600 hover:bg-red-50 transition-colors cursor-pointer min-h-[38px]"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Logout</span>
@@ -140,7 +176,7 @@ export function DashboardSidebar() {
       {mobileOpen && (
         <div
           onClick={() => setMobileOpen(false)}
-          className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-xs lg:hidden"
         />
       )}
     </>

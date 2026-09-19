@@ -29,7 +29,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-sans font-semibold transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none rounded-lg cursor-pointer";
+      "inline-flex items-center justify-center font-sans font-semibold transition-all duration-150 active:scale-[0.97] touch-manipulation select-none disabled:opacity-50 disabled:pointer-events-none rounded-lg cursor-pointer";
 
     const variants = {
       primary:
@@ -43,9 +43,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const sizes = {
-      sm: "text-xs px-3.5 py-2 gap-1.5",
-      md: "text-sm px-5 py-2.5 gap-2",
-      lg: "text-base px-7 py-3.5 gap-2.5",
+      sm: "text-xs px-3.5 py-2 gap-1.5 min-h-[38px]",
+      md: "text-sm px-5 py-2.5 gap-2 min-h-[44px]",
+      lg: "text-base px-7 py-3.5 gap-2.5 min-h-[48px]",
     };
 
     const content = (
@@ -61,6 +61,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       return (
         <Link
           href={href}
+          prefetch={true}
           className={cn("group", baseStyles, variants[variant], sizes[size], className)}
         >
           {content}

@@ -26,9 +26,9 @@ export function Hero() {
         <div className="text-center max-w-4xl mx-auto space-y-6 md:space-y-8">
           {/* Main Editorial H1 */}
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.35, delay: 0.05 }}
             className="font-serif font-bold text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-primary tracking-[-0.04em] leading-[0.92] uppercase"
           >
             Become A Social <br className="hidden sm:inline" />
@@ -37,9 +37,9 @@ export function Hero() {
 
           {/* Supporting Headlines */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.35, delay: 0.1 }}
             className="space-y-3 max-w-2xl mx-auto"
           >
             <p className="font-serif italic text-2xl sm:text-3xl text-primary/90">
@@ -52,9 +52,9 @@ export function Hero() {
 
           {/* CTAs */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: 0.35, delay: 0.15 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2"
           >
             <Button
@@ -80,7 +80,7 @@ export function Hero() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.35, delay: 0.2 }}
             className="pt-2 flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm text-secondary font-medium"
           >
             <div className="flex items-center gap-1.5">

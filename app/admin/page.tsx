@@ -21,27 +21,33 @@ export default async function AdminDashboardPage() {
   let recentPayments: any[] = [];
 
   try {
-    const studentCount = await prisma.user.count({ where: { role: "STUDENT" } });
-    const enrollCount = await prisma.enrollment.count();
-    const courseCount = await prisma.course.count();
-    const allSuccessPayments = await prisma.payment.findMany({
-      where: { status: "SUCCESS" },
-      select: { amount: true },
-    });
-    recentPayments = await prisma.payment.findMany({
-      where: { status: "SUCCESS" },
-      include: { user: true },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-    });
+    const [
+      studentCount,
+      enrollCount,
+      courseCount,
+      revenueAggregate,
+      recentPaymentsList,
+    ] = await Promise.all([
+      prisma.user.count({ where: { role: "STUDENT" } }),
+      prisma.enrollment.count(),
+      prisma.course.count(),
+      prisma.payment.aggregate({
+        where: { status: "SUCCESS" },
+        _sum: { amount: true },
+      }),
+      prisma.payment.findMany({
+        where: { status: "SUCCESS" },
+        include: { user: true },
+        orderBy: { createdAt: "desc" },
+        take: 5,
+      }),
+    ]);
 
     totalStudents = studentCount;
     totalEnrollments = enrollCount;
     activeCourses = courseCount;
-    totalRevenuePaisa = allSuccessPayments.reduce(
-      (acc: number, p: any) => acc + (p.amount || 0),
-      0
-    );
+    totalRevenuePaisa = revenueAggregate._sum.amount || 0;
+    recentPayments = recentPaymentsList;
   } catch (err) {
     console.warn("AdminDashboardPage DB query notice:", err);
   }

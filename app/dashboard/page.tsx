@@ -29,22 +29,28 @@ export default async function DashboardPage() {
   let resumeUrl = "/dashboard/courses/social-media-manager/lessons/mod-1-lesson-1";
 
   try {
-    // 1. Fetch total lessons from DB
-    const dbTotalLessons = await prisma.lesson.count();
-    if (dbTotalLessons > 0) totalLessonsCount = dbTotalLessons;
+    const [dbTotalLessons, user, allLessons] = await Promise.all([
+      prisma.lesson.count(),
+      userEmail
+        ? prisma.user.findUnique({
+            where: { email: userEmail.toLowerCase() },
+            select: {
+              id: true,
+              progress: {
+                where: { completed: true },
+                select: { lessonId: true },
+              },
+              certificates: { select: { id: true } },
+            },
+          })
+        : Promise.resolve(null),
+      prisma.lesson.findMany({
+        orderBy: [{ module: { order: "asc" } }, { order: "asc" }],
+        select: { id: true, order: true },
+      }),
+    ]);
 
-    // 2. Fetch authenticated user (or fallback to student in dev)
-    let user = null;
-    if (userEmail) {
-      user = await prisma.user.findUnique({
-        where: { email: userEmail.toLowerCase() },
-        include: {
-          progress: { where: { completed: true } },
-          certificates: true,
-          enrollments: true,
-        },
-      });
-    }
+    if (dbTotalLessons > 0) totalLessonsCount = dbTotalLessons;
 
     if (user) {
       completedLessonsCount = user.progress.length;
@@ -56,11 +62,6 @@ export default async function DashboardPage() {
 
       // Determine the next uncompleted lesson
       const completedLessonIds = new Set(user.progress.map((p) => p.lessonId));
-      const allLessons = await prisma.lesson.findMany({
-        orderBy: [{ module: { order: "asc" } }, { order: "asc" }],
-        include: { module: true },
-      });
-
       const nextLesson =
         allLessons.find((l) => !completedLessonIds.has(l.id)) || allLessons[0];
 

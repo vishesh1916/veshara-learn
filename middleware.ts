@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const host = request.headers.get("host") || "";
 
@@ -11,8 +11,7 @@ export async function middleware(request: NextRequest) {
   // 3. Environment flag: NEXT_PUBLIC_APP_MODE === "admin"
   const isAdminDomain =
     host.startsWith("admin.") ||
-    host.includes("-admin.") ||
-    host.includes("admin-") ||
+    host.startsWith("veshara-admin.") ||
     process.env.NEXT_PUBLIC_APP_MODE === "admin";
 
   if (isAdminDomain) {

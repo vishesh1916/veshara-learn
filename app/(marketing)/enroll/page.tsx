@@ -146,7 +146,7 @@ export default function EnrollPage() {
     <>
       <Script
         src="https://checkout.razorpay.com/v1/checkout.js"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
         onLoad={() => setRazorpayReady(true)}
       />
 

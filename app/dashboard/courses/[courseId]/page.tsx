@@ -23,24 +23,40 @@ export default async function CourseOverviewPage({
   const session = await getServerSession(authOptions);
   const userEmail = session?.user?.email || "";
 
-  // Fetch course and curriculum directly from database
+  // Fetch course and curriculum directly from database in parallel with user progress
   let dbCourse = null;
+  let user = null;
   try {
-    dbCourse = await prisma.course.findFirst({
-      where: {
-        OR: [{ id: params.courseId }, { slug: params.courseId }],
-      },
-      include: {
-        modules: {
-          orderBy: { order: "asc" },
-          include: {
-            lessons: {
-              orderBy: { order: "asc" },
+    const [courseResult, userResult] = await Promise.all([
+      prisma.course.findFirst({
+        where: {
+          OR: [{ id: params.courseId }, { slug: params.courseId }],
+        },
+        include: {
+          modules: {
+            orderBy: { order: "asc" },
+            include: {
+              lessons: {
+                orderBy: { order: "asc" },
+              },
             },
           },
         },
-      },
-    });
+      }),
+      userEmail
+        ? prisma.user.findUnique({
+            where: { email: userEmail.toLowerCase() },
+            select: {
+              progress: {
+                where: { completed: true },
+                select: { lessonId: true },
+              },
+            },
+          })
+        : Promise.resolve(null),
+    ]);
+    dbCourse = courseResult;
+    user = userResult;
   } catch (e) {
     console.warn("CourseOverviewPage DB query notice:", e);
   }
@@ -67,17 +83,6 @@ export default async function CourseOverviewPage({
     (acc: number, m: any) => acc + (m.lessons?.length || 0),
     0
   );
-
-  // Fetch student's real completed lessons from DB
-  let user = null;
-  if (userEmail) {
-    user = await prisma.user.findUnique({
-      where: { email: userEmail.toLowerCase() },
-      include: {
-        progress: { where: { completed: true } },
-      },
-    });
-  }
 
   const completedLessonIds = new Set<string>();
   user?.progress?.forEach((p) => {

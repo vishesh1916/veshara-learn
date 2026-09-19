@@ -7,12 +7,23 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    touch-action: manipulation;
   }
 
   body {
     @apply bg-cream text-primary font-sans selection:bg-accent selection:text-primary;
     background-color: #F5F3EE;
     color: #11110F;
+    touch-action: manipulation;
+  }
+
+  /* Instant mobile touch feedback */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button, a {
+    touch-action: manipulation;
   }
 
   /* High contrast editorial serif headlines */

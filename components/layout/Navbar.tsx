@@ -28,59 +28,31 @@ export function Navbar() {
   const pathname = usePathname();
   const { data: session } = useSession();
 
-  const [isEnrolled, setIsEnrolled] = React.useState<boolean>(false);
+  // Instantly derive enrollment status from session JWT (zero-latency, no network flash)
+  const isEnrolled = Boolean((session?.user as any)?.isEnrolled);
 
-  // Sync scroll state
+  // Lock body scroll when mobile drawer is open
   React.useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Close menus on route change
-  React.useEffect(() => {
-    setIsMobileMenuOpen(false);
-    setProfileDropdownOpen(false);
-  }, [pathname]);
-
-  // Close profile dropdown on click outside
-  React.useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node)
-      ) {
-        setProfileDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  // Fetch verified enrollment status for authenticated user
-  React.useEffect(() => {
-    let isMounted = true;
-    if (session?.user?.email) {
-      if ((session.user as any)?.isEnrolled) {
-        setIsEnrolled(true);
-      }
-      fetch("/api/user/status")
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.authenticated && isMounted) {
-            setIsEnrolled(Boolean(data.isEnrolled));
-          }
-        })
-        .catch(() => {});
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
     } else {
-      setIsEnrolled(false);
+      document.body.style.overflow = "";
     }
     return () => {
-      isMounted = false;
+      document.body.style.overflow = "";
     };
-  }, [session]);
+  }, [isMobileMenuOpen]);
+
+  // Bulletproof sign out that eliminates 404s and redirect issues
+  const handleSignOut = async () => {
+    try {
+      await signOut({ redirect: false });
+    } catch (e) {
+      console.error("Sign out error:", e);
+    } finally {
+      window.location.href = "/";
+    }
+  };
 
   // Compute dynamic navigation links based on real paid status
   const navLinks = React.useMemo(() => {
@@ -235,7 +207,8 @@ export function Navbar() {
                         )}
 
                         <button
-                          onClick={() => signOut({ callbackUrl: "/" })}
+                          type="button"
+                          onClick={handleSignOut}
                           className="w-full flex items-center gap-2.5 text-xs font-medium text-red-600 p-2 rounded-xl hover:bg-red-50 transition-colors cursor-pointer text-left"
                         >
                           <LogOut className="w-4 h-4" />
@@ -309,7 +282,9 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="block font-serif text-2xl font-bold text-primary tracking-tight py-2 border-b border-border-custom/50"
+                  prefetch={true}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block font-serif text-2xl font-bold text-primary tracking-tight py-2 border-b border-border-custom/50 active:text-accent transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -321,13 +296,15 @@ export function Navbar() {
               {!session ? (
                 <Link
                   href="/login"
-                  className="w-full flex items-center justify-center gap-2 p-3 text-sm font-bold text-primary rounded-xl bg-white border border-border-custom"
+                  prefetch={true}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full flex items-center justify-center gap-2 p-3 text-sm font-bold text-primary rounded-xl bg-white border border-border-custom shadow-xs"
                 >
                   <User className="w-4 h-4" />
                   <span>Sign In to Account</span>
                 </Link>
               ) : (
-                <div className="bg-white border border-border-custom rounded-2xl p-4 space-y-3">
+                <div className="bg-white border border-border-custom rounded-2xl p-4 space-y-3 shadow-subtle">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-primary text-cream flex items-center justify-center font-bold text-sm">
                       {userInitial}
@@ -358,6 +335,8 @@ export function Navbar() {
                   {isEnrolled ? (
                     <Link
                       href="/dashboard"
+                      prefetch={true}
+                      onClick={() => setIsMobileMenuOpen(false)}
                       className="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-primary text-cream font-bold text-sm"
                     >
                       <BookOpen className="w-4 h-4" />
@@ -366,6 +345,8 @@ export function Navbar() {
                   ) : (
                     <Link
                       href="/enroll"
+                      prefetch={true}
+                      onClick={() => setIsMobileMenuOpen(false)}
                       className="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-accent text-primary font-bold text-sm border border-primary"
                     >
                       <Sparkles className="w-4 h-4" />
@@ -374,8 +355,9 @@ export function Navbar() {
                   )}
 
                   <button
-                    onClick={() => signOut({ callbackUrl: "/" })}
-                    className="w-full flex items-center justify-center gap-2 text-xs font-semibold text-red-600 pt-2"
+                    type="button"
+                    onClick={handleSignOut}
+                    className="w-full flex items-center justify-center gap-2 text-xs font-semibold text-red-600 pt-2 cursor-pointer"
                   >
                     <LogOut className="w-3.5 h-3.5" />
                     <span>Sign Out</span>
