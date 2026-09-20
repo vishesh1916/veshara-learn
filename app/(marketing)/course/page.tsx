@@ -51,13 +51,6 @@ export default function CoursePage() {
       <section className="py-16 md:py-24 border-b border-border-custom bg-cream relative">
         <Container>
           <div className="max-w-4xl mx-auto text-center space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-border-custom shadow-subtle">
-              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-              <span className="text-xs font-mono font-bold uppercase tracking-wider text-primary">
-                8 Modules • 45 Lessons • Verified Certification
-              </span>
-            </div>
-
             <h1 className="font-serif font-bold text-4xl sm:text-6xl md:text-7xl text-primary tracking-[-0.04em] leading-[0.95] uppercase">
               Social Media Manager: <br className="hidden sm:inline" />
               <span className="italic font-normal">Beginner to Client-Ready</span>
