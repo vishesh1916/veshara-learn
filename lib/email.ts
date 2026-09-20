@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 const resend = new Resend(process.env.RESEND_API_KEY || "");
 
@@ -9,6 +10,34 @@ interface SendEmailParams {
 }
 
 export async function sendEmail({ to, subject, html }: SendEmailParams) {
+  // Option 1: Gmail SMTP via App Password (Instant free delivery to any recipient)
+  const gmailUser = process.env.GMAIL_USER || process.env.SMTP_USER;
+  const gmailPass = process.env.GMAIL_APP_PASSWORD || process.env.SMTP_PASS;
+
+  if (gmailUser && gmailPass) {
+    try {
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: gmailUser,
+          pass: gmailPass.replace(/\s+/g, ""), // clean spaces if user pasted with spaces
+        },
+      });
+
+      const info = await transporter.sendMail({
+        from: `"Veshara Learn" <${gmailUser}>`,
+        to,
+        subject,
+        html,
+      });
+
+      return { success: true, data: info };
+    } catch (err) {
+      console.warn("Nodemailer Gmail SMTP error:", err);
+    }
+  }
+
+  // Option 2: Resend API
   try {
     const fromEmail = process.env.RESEND_FROM_EMAIL || "Veshara Learn <onboarding@resend.dev>";
     const { data, error } = await resend.emails.send({
