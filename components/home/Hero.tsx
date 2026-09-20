@@ -24,19 +24,6 @@ export function Hero() {
 
       <Container>
         <div className="text-center max-w-4xl mx-auto space-y-6 md:space-y-8">
-          {/* Veshara Brand Micro-Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35 }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 backdrop-blur-xs border border-border-custom shadow-xs"
-          >
-            <span className="w-2 h-2 rounded-full bg-gradient-to-tr from-[#FF5900] to-[#FFA726] shadow-[0_0_8px_rgba(255,89,0,0.6)]" />
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-primary">
-              VESHARA ACADEMY • SPEAK • LEARN • TRANSFORM
-            </span>
-          </motion.div>
-
           {/* Main Editorial H1 */}
           <motion.h1
             initial={{ opacity: 0, y: 15 }}

@@ -11,7 +11,7 @@ export default function AuthLayout({
   return (
     <div className="min-h-screen bg-cream flex flex-col justify-between py-12 px-4 sm:px-6">
       <div className="flex justify-center">
-        <VesharaLogo variant="dark" size="lg" badge="learn" href="/" />
+        <VesharaLogo variant="dark" size="lg" href="/" />
       </div>
 
       <div className="w-full max-w-md mx-auto my-auto py-8">

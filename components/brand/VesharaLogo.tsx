@@ -33,20 +33,20 @@ export function VesharaLogo({
   const sizeMap = {
     sm: {
       logoHeight: 28,
-      logoWidth: 96,
+      logoWidth: 142,
       iconSize: 28,
       textSize: "text-[10px]",
     },
     md: {
       logoHeight: 34,
-      logoWidth: 118,
+      logoWidth: 173,
       iconSize: 34,
       textSize: "text-xs",
     },
     lg: {
-      logoHeight: 42,
-      logoWidth: 145,
-      iconSize: 42,
+      logoHeight: 44,
+      logoWidth: 223,
+      iconSize: 44,
       textSize: "text-sm",
     },
   };
@@ -61,7 +61,7 @@ export function VesharaLogo({
   const content = (
     <div
       className={cn(
-        "inline-flex items-center gap-2.5 select-none transition-transform duration-150 active:scale-[0.98]",
+        "inline-flex items-center gap-2 select-none transition-transform duration-150 active:scale-[0.98]",
         className
       )}
     >
@@ -69,11 +69,11 @@ export function VesharaLogo({
         <div className="relative flex items-center">
           <Image
             src={logoSrc}
-            alt="VESHARA"
+            alt="VESHARA — Speak • Learn • Transform"
             width={logoWidth}
             height={logoHeight}
             priority={priority}
-            className="h-auto w-auto object-contain transition-all duration-200 group-hover:drop-shadow-[0_2px_14px_rgba(255,107,0,0.35)]"
+            className="h-auto w-auto object-contain transition-all duration-200 group-hover:brightness-105"
             style={{ maxHeight: `${logoHeight}px` }}
           />
         </div>
@@ -85,7 +85,7 @@ export function VesharaLogo({
             width={iconSize}
             height={iconSize}
             priority={priority}
-            className="rounded-xl object-contain transition-all duration-200 group-hover:drop-shadow-[0_2px_14px_rgba(255,107,0,0.35)]"
+            className="object-contain transition-all duration-200 group-hover:scale-105"
             style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
           />
         </div>

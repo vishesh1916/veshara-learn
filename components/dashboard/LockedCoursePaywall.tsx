@@ -31,7 +31,7 @@ export function LockedCoursePaywall({
     <div className="min-h-screen bg-[#F5F3EE] flex flex-col justify-between p-4 sm:p-8">
       {/* Top Brand Bar */}
       <div className="max-w-4xl mx-auto w-full flex items-center justify-between py-4 border-b border-border-custom">
-        <VesharaLogo variant="dark" size="md" badge="learn" href="/" />
+        <VesharaLogo variant="dark" size="md" href="/" />
 
         <button
           type="button"

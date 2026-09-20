@@ -57,7 +57,7 @@ export function DashboardSidebar() {
     <>
       {/* Mobile Top Header */}
       <div className="lg:hidden flex items-center justify-between px-5 py-3.5 bg-white border-b border-border-custom sticky top-0 z-30">
-        <VesharaLogo variant="dark" size="sm" badge="Student" href="/" />
+        <VesharaLogo variant="dark" size="sm" href="/" />
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="p-2 text-primary hover:opacity-75 transition-opacity cursor-pointer rounded-lg"
@@ -78,7 +78,7 @@ export function DashboardSidebar() {
           {/* Logo Brand Header */}
           <div className="px-5 py-5 border-b border-border-custom flex items-center justify-between">
             <div className="flex items-center justify-between gap-3 w-full">
-              <VesharaLogo variant="dark" size="sm" badge="Student" href="/" />
+              <VesharaLogo variant="dark" size="sm" href="/" />
               <button
                 type="button"
                 onClick={() => setMobileOpen(false)}

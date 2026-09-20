@@ -58,7 +58,7 @@ export function AdminSidebar() {
     <>
       {/* Mobile Top Header for Admin */}
       <div className="lg:hidden flex items-center justify-between px-5 py-3.5 bg-primary text-cream sticky top-0 z-30 border-b border-[#252522]">
-        <VesharaLogo variant="light" size="sm" badge="admin" badgeVariant="accent" href="/admin" />
+        <VesharaLogo variant="light" size="sm" href="/admin" />
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="p-2 text-cream hover:text-accent transition-colors cursor-pointer rounded-lg"
@@ -78,7 +78,7 @@ export function AdminSidebar() {
           {/* Admin Header */}
           <div className="px-5 py-5 border-b border-[#252522] flex items-center justify-between">
             <div className="flex items-center justify-between gap-3 w-full">
-              <VesharaLogo variant="light" size="sm" badge="admin" badgeVariant="accent" href="/admin" />
+              <VesharaLogo variant="light" size="sm" href="/admin" />
               <button
                 type="button"
                 onClick={() => setMobileOpen(false)}

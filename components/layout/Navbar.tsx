@@ -32,6 +32,15 @@ export function Navbar() {
   // Instantly derive enrollment status from session JWT (zero-latency, no network flash)
   const isEnrolled = Boolean((session?.user as any)?.isEnrolled);
 
+  // Scroll listener for sticky header
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   // Lock body scroll when mobile drawer is open
   React.useEffect(() => {
     if (isMobileMenuOpen) {
@@ -85,7 +94,7 @@ export function Navbar() {
       >
         <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Brand Logo */}
-          <VesharaLogo variant="dark" size="md" badge="learn" href="/" />
+          <VesharaLogo variant="dark" size="md" href="/" />
 
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-8">

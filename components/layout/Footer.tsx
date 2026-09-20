@@ -12,7 +12,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8 pb-16 border-b border-[#252522]">
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-4">
-            <VesharaLogo variant="light" size="lg" badge="learn" href="/" />
+            <VesharaLogo variant="light" size="lg" href="/" />
             <p className="text-[#A1A09A] text-sm sm:text-base leading-relaxed max-w-sm">
               Learn skills. Build proof. Create opportunities. Practical, career-focused digital education for ambitious beginners in India.
             </p>
