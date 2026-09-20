@@ -10,6 +10,7 @@ interface LeadCaptureProps {
   buttonText?: string;
   placeholder?: string;
   className?: string;
+  stacked?: boolean;
 }
 
 export function LeadCapture({
@@ -17,10 +18,12 @@ export function LeadCapture({
   buttonText = "Download Free",
   placeholder = "Enter your work or personal email...",
   className = "",
+  stacked = false,
 }: LeadCaptureProps) {
   const [email, setEmail] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(false);
+  const [resourceLink, setResourceLink] = React.useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,13 +40,19 @@ export function LeadCapture({
         body: JSON.stringify({ email, source }),
       });
 
-      if (!res.ok) throw new Error("Failed to save lead");
+      const data = await res.json().catch(() => ({}));
+      if (data?.resourceLink) {
+        setResourceLink(data.resourceLink);
+      } else {
+        setResourceLink(`/resources/${source}`);
+      }
 
       setSubmitted(true);
-      toast.success("Check your inbox! Resource link sent.");
+      toast.success("Access unlocked! Link sent to your email.");
     } catch (err) {
-      toast.success("Success! You have been granted access.");
+      setResourceLink(`/resources/${source}`);
       setSubmitted(true);
+      toast.success("Access unlocked!");
     } finally {
       setLoading(false);
     }
@@ -51,28 +60,41 @@ export function LeadCapture({
 
   if (submitted) {
     return (
-      <div className="flex items-center gap-2 p-4 bg-accent/20 border border-primary/20 rounded-lg text-primary text-sm font-medium">
-        <CheckCircle2 className="w-5 h-5 text-primary" />
-        <span>Resource sent to {email}! Check your inbox in a moment.</span>
+      <div className="space-y-3 p-4 bg-[#F5F3EE] border border-border-custom rounded-xl text-primary text-sm">
+        <div className="flex items-center gap-2 font-semibold">
+          <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
+          <span>Access Unlocked!</span>
+        </div>
+        <p className="text-xs text-secondary leading-relaxed">
+          Link sent to <strong>{email}</strong>. You can also view or download the resource immediately below:
+        </p>
+        <a
+          href={resourceLink || `/resources/${source}`}
+          className="inline-flex items-center justify-center w-full px-4 py-2.5 rounded-lg bg-accent text-primary text-xs font-bold border border-primary/20 hover:bg-primary hover:text-white transition-colors"
+        >
+          <span>Open Resource Now →</span>
+        </a>
       </div>
     );
   }
 
+  const layoutClass = stacked ? "flex flex-col gap-3" : "flex flex-col sm:flex-row gap-3";
+
   return (
-    <form onSubmit={handleSubmit} className={`flex flex-col sm:flex-row gap-3 ${className}`}>
+    <form onSubmit={handleSubmit} className={`${layoutClass} ${className}`}>
       <input
         type="email"
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder={placeholder}
-        className="flex-1 rounded-lg border border-border-custom bg-white px-4 py-3 text-sm text-primary placeholder:text-secondary focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary shadow-subtle"
+        className="w-full rounded-lg border border-border-custom bg-white px-4 py-3 text-sm text-primary placeholder:text-secondary focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary shadow-subtle"
       />
       <Button
         type="submit"
         variant="primary"
         loading={loading}
-        className="whitespace-nowrap px-6"
+        className={`${stacked ? "w-full justify-center" : "whitespace-nowrap px-6"}`}
       >
         <span>{buttonText}</span>
         {!loading && <ArrowRight className="w-4 h-4 ml-2" />}

@@ -71,6 +71,7 @@ export default function ResourcesPage() {
                 source={featured.slug}
                 buttonText="Send Me PDF"
                 placeholder="Enter your email..."
+                stacked
               />
             </div>
           </div>

@@ -10,8 +10,9 @@ interface SendEmailParams {
 
 export async function sendEmail({ to, subject, html }: SendEmailParams) {
   try {
+    const fromEmail = process.env.RESEND_FROM_EMAIL || "Veshara Learn <onboarding@resend.dev>";
     const { data, error } = await resend.emails.send({
-      from: "Veshara Learn <onboarding@resend.dev>",
+      from: fromEmail,
       to,
       subject,
       html,
@@ -120,3 +121,47 @@ export async function sendPurchaseConfirmationEmail(
     `,
   });
 }
+
+export async function sendResourceEmail(
+  email: string,
+  resourceTitle: string,
+  resourceLink: string,
+  resourceType: string
+) {
+  return sendEmail({
+    to: email,
+    subject: `Your Free Resource: ${resourceTitle} 📥`,
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 24px; background-color: #F5F3EE; color: #11110F;">
+        <div style="border-bottom: 2px solid #DEDDD6; padding-bottom: 20px; margin-bottom: 28px;">
+          <h2 style="font-family: Georgia, serif; font-size: 26px; margin: 0; color: #11110F; letter-spacing: -0.5px;">VESHARA LEARN</h2>
+        </div>
+        
+        <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 12px;">Here is your free toolkit! 🚀</h1>
+        <p style="font-size: 16px; line-height: 1.6; color: #74736D; margin-bottom: 24px;">
+          Thank you for your interest. You can access your copy of <strong>${resourceTitle}</strong> immediately using the button below.
+        </p>
+        
+        <div style="background-color: #FFFFFF; border: 1px solid #DEDDD6; border-radius: 12px; padding: 24px; margin-bottom: 28px;">
+          <span style="font-size: 11px; font-family: monospace; font-weight: 700; text-transform: uppercase; color: #74736D; display: block; margin-bottom: 8px;">
+            ${resourceType}
+          </span>
+          <h3 style="margin: 0 0 10px 0; font-size: 18px; color: #11110F;">${resourceTitle}</h3>
+          <p style="margin: 0; font-size: 14px; color: #74736D; line-height: 1.5;">
+            Lifetime open access provided by Veshara Learn.
+          </p>
+        </div>
+
+        <a href="${resourceLink}" 
+           style="display: inline-block; background-color: #D7FF2F; color: #11110F; font-weight: 700; font-size: 15px; padding: 14px 28px; border-radius: 8px; text-decoration: none; border: 1px solid #11110F;">
+          Open / Download Resource →
+        </a>
+
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #DEDDD6; font-size: 13px; color: #74736D;">
+          Looking to become a certified Social Media Manager? Explore our practical curriculum at <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://vesharalearn.vercel.app'}" style="color: #11110F;">vesharalearn.vercel.app</a>.
+        </div>
+      </div>
+    `,
+  });
+}
+
