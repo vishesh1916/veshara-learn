@@ -1,7 +1,17 @@
 import { Resend } from "resend";
 import nodemailer from "nodemailer";
 
-const resend = new Resend(process.env.RESEND_API_KEY || "");
+let resendInstance: Resend | null = null;
+function getResendClient(): Resend | null {
+  if (!resendInstance && process.env.RESEND_API_KEY) {
+    try {
+      resendInstance = new Resend(process.env.RESEND_API_KEY);
+    } catch (e) {
+      console.warn("Could not initialize Resend client:", e);
+    }
+  }
+  return resendInstance;
+}
 
 interface SendEmailParams {
   to: string;
@@ -39,6 +49,12 @@ export async function sendEmail({ to, subject, html }: SendEmailParams) {
 
   // Option 2: Resend API
   try {
+    const resend = getResendClient();
+    if (!resend) {
+      console.warn("No email service configured (neither Gmail SMTP nor Resend API key).");
+      return { success: false, error: "No email service configured" };
+    }
+
     const fromEmail = process.env.RESEND_FROM_EMAIL || "Veshara Learn <onboarding@resend.dev>";
     const { data, error } = await resend.emails.send({
       from: fromEmail,
