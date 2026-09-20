@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { NAV_LINKS, SITE_CONFIG } from "@/lib/constants";
 import { Button } from "@/components/ui/Button";
+import { VesharaLogo } from "@/components/brand/VesharaLogo";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
@@ -84,11 +85,7 @@ export function Navbar() {
       >
         <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Brand Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <span className="font-serif font-bold text-2xl sm:text-3xl text-primary tracking-[-0.04em] uppercase group-hover:opacity-90 transition-opacity">
-              Veshara<span className="text-secondary font-light">.learn</span>
-            </span>
-          </Link>
+          <VesharaLogo variant="dark" size="md" badge="learn" href="/" />
 
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-8">

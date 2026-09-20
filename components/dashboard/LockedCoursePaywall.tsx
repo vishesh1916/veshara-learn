@@ -6,6 +6,7 @@ import { signOut } from "next-auth/react";
 import { Lock, Sparkles, CheckCircle2, ShieldCheck, ArrowRight, LogOut, ArrowLeft } from "lucide-react";
 import { COURSE } from "@/lib/constants";
 import { Button } from "@/components/ui/Button";
+import { VesharaLogo } from "@/components/brand/VesharaLogo";
 
 interface LockedCoursePaywallProps {
   studentName: string;
@@ -30,11 +31,7 @@ export function LockedCoursePaywall({
     <div className="min-h-screen bg-[#F5F3EE] flex flex-col justify-between p-4 sm:p-8">
       {/* Top Brand Bar */}
       <div className="max-w-4xl mx-auto w-full flex items-center justify-between py-4 border-b border-border-custom">
-        <Link href="/" prefetch={true} className="inline-flex items-center gap-2 group">
-          <span className="font-serif font-bold text-2xl text-primary tracking-[-0.04em] uppercase">
-            Veshara<span className="text-secondary font-light">.learn</span>
-          </span>
-        </Link>
+        <VesharaLogo variant="dark" size="md" badge="learn" href="/" />
 
         <button
           type="button"

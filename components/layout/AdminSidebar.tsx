@@ -17,6 +17,7 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { VesharaLogo } from "@/components/brand/VesharaLogo";
 
 export function AdminSidebar() {
   const pathname = usePathname();
@@ -57,14 +58,7 @@ export function AdminSidebar() {
     <>
       {/* Mobile Top Header for Admin */}
       <div className="lg:hidden flex items-center justify-between px-5 py-3.5 bg-primary text-cream sticky top-0 z-30 border-b border-[#252522]">
-        <div className="flex items-center gap-2.5">
-          <Link href="/admin" prefetch={true} className="font-serif font-bold text-lg text-cream uppercase tracking-tight">
-            Veshara<span className="text-accent">.admin</span>
-          </Link>
-          <span className="text-[9px] font-mono font-bold uppercase tracking-wider bg-accent text-primary px-2 py-0.5 rounded">
-            Admin
-          </span>
-        </div>
+        <VesharaLogo variant="light" size="sm" badge="admin" badgeVariant="accent" href="/admin" />
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="p-2 text-cream hover:text-accent transition-colors cursor-pointer rounded-lg"
@@ -84,24 +78,15 @@ export function AdminSidebar() {
           {/* Admin Header */}
           <div className="px-5 py-5 border-b border-[#252522] flex items-center justify-between">
             <div className="flex items-center justify-between gap-3 w-full">
-              <Link href="/admin" prefetch={true} className="inline-block">
-                <span className="font-serif font-bold text-xl text-cream tracking-tight uppercase">
-                  Veshara<span className="text-accent">.admin</span>
-                </span>
-              </Link>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono font-bold uppercase tracking-wider bg-accent text-primary px-2.5 py-0.5 rounded-full shrink-0 shadow-xs">
-                  Admin
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setMobileOpen(false)}
-                  className="lg:hidden p-1.5 text-[#A1A09A] hover:text-cream"
-                  aria-label="Close menu"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
+              <VesharaLogo variant="light" size="sm" badge="admin" badgeVariant="accent" href="/admin" />
+              <button
+                type="button"
+                onClick={() => setMobileOpen(false)}
+                className="lg:hidden p-1.5 text-[#A1A09A] hover:text-cream"
+                aria-label="Close menu"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
           </div>
 

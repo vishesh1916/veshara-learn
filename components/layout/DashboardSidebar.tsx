@@ -16,6 +16,7 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { VesharaLogo } from "@/components/brand/VesharaLogo";
 
 export function DashboardSidebar() {
   const pathname = usePathname();
@@ -56,14 +57,7 @@ export function DashboardSidebar() {
     <>
       {/* Mobile Top Header */}
       <div className="lg:hidden flex items-center justify-between px-5 py-3.5 bg-white border-b border-border-custom sticky top-0 z-30">
-        <div className="flex items-center gap-2.5">
-          <Link href="/" prefetch={true} className="font-serif font-bold text-lg text-primary uppercase tracking-tight">
-            Veshara<span className="text-secondary font-light">.learn</span>
-          </Link>
-          <span className="text-[9px] font-mono font-bold uppercase tracking-wider bg-accent text-primary px-2 py-0.5 rounded border border-primary/20">
-            Student
-          </span>
-        </div>
+        <VesharaLogo variant="dark" size="sm" badge="Student" href="/" />
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="p-2 text-primary hover:opacity-75 transition-opacity cursor-pointer rounded-lg"
@@ -84,24 +78,15 @@ export function DashboardSidebar() {
           {/* Logo Brand Header */}
           <div className="px-5 py-5 border-b border-border-custom flex items-center justify-between">
             <div className="flex items-center justify-between gap-3 w-full">
-              <Link href="/" prefetch={true} className="inline-block">
-                <span className="font-serif font-bold text-xl text-primary tracking-tight uppercase">
-                  Veshara<span className="text-secondary font-light">.learn</span>
-                </span>
-              </Link>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono font-bold uppercase tracking-wider bg-accent text-primary px-2.5 py-0.5 rounded-full border border-primary/20 shrink-0 shadow-xs">
-                  Student
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setMobileOpen(false)}
-                  className="lg:hidden p-1.5 text-secondary hover:text-primary"
-                  aria-label="Close menu"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
+              <VesharaLogo variant="dark" size="sm" badge="Student" href="/" />
+              <button
+                type="button"
+                onClick={() => setMobileOpen(false)}
+                className="lg:hidden p-1.5 text-secondary hover:text-primary"
+                aria-label="Close menu"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
           </div>
 

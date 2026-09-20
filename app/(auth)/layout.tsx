@@ -1,6 +1,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
+import { VesharaLogo } from "@/components/brand/VesharaLogo";
 
 export default function AuthLayout({
   children,
@@ -9,12 +10,8 @@ export default function AuthLayout({
 }) {
   return (
     <div className="min-h-screen bg-cream flex flex-col justify-between py-12 px-4 sm:px-6">
-      <div className="text-center">
-        <Link href="/" className="inline-block">
-          <span className="font-serif font-bold text-3xl sm:text-4xl text-primary tracking-[-0.04em] uppercase">
-            Veshara<span className="text-secondary font-light">.learn</span>
-          </span>
-        </Link>
+      <div className="flex justify-center">
+        <VesharaLogo variant="dark" size="lg" badge="learn" href="/" />
       </div>
 
       <div className="w-full max-w-md mx-auto my-auto py-8">

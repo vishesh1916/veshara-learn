@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Instagram, Linkedin, Youtube, Mail, ArrowUpRight } from "lucide-react";
 import { FOOTER_LINKS, SITE_CONFIG } from "@/lib/constants";
 import { Container } from "@/components/ui/Container";
+import { VesharaLogo } from "@/components/brand/VesharaLogo";
 
 export function Footer() {
   return (
@@ -11,11 +12,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8 pb-16 border-b border-[#252522]">
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="inline-block">
-              <span className="font-serif font-bold text-3xl text-cream tracking-[-0.04em] uppercase">
-                Veshara<span className="text-secondary font-light">.learn</span>
-              </span>
-            </Link>
+            <VesharaLogo variant="light" size="lg" badge="learn" href="/" />
             <p className="text-[#A1A09A] text-sm sm:text-base leading-relaxed max-w-sm">
               Learn skills. Build proof. Create opportunities. Practical, career-focused digital education for ambitious beginners in India.
             </p>
