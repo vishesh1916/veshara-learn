@@ -61,7 +61,7 @@ export function Portfolio() {
       icon: ImageIcon,
       title: "Branded Content Asset Package",
       tag: "Design",
-      subtitle: "Canva Pro Social Production Suite",
+      subtitle: "Brand Design & Social Production Suite",
       deliverables: [
         "5 multi-slide educational carousels",
         "3 high-retention reel visual concept boards",

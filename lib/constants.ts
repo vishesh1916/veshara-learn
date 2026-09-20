@@ -230,8 +230,6 @@ export const SKILLS = [
 
 export const TOOLS = [
   { name: "Instagram", category: "Distribution" },
-  { name: "Canva Pro", category: "Visual Design" },
-  { name: "CapCut", category: "Video Editing" },
   { name: "Meta Suite", category: "Publishing" },
   { name: "Google Sheets", category: "Planning" },
   { name: "ChatGPT & AI", category: "Copywriting" },

@@ -12,18 +12,6 @@ export function Tools() {
       badge: "Mobile & Web",
     },
     {
-      name: "Canva Pro",
-      role: "Branded Carousels & Story Sequences",
-      type: "Visual Design",
-      badge: "Free Tier Works",
-    },
-    {
-      name: "CapCut",
-      role: "Viral Short-Form Reel Editing & Audio",
-      type: "Video Production",
-      badge: "Mobile & Desktop",
-    },
-    {
       name: "Meta Suite",
       role: "Unified Scheduling, Moderation & DMs",
       type: "Operations",
@@ -54,7 +42,7 @@ export function Tools() {
           />
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
           {tools.map((tool, index) => (
             <ScrollReveal key={tool.name} delay={index * 0.08}>
               <div className="bg-white border border-border-custom rounded-xl p-6 sm:p-7 flex flex-col justify-between hover:border-primary transition-all duration-200 shadow-subtle group">
