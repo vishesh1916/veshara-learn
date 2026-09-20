@@ -12,7 +12,7 @@ export function Pricing() {
     "6 Hands-on Portfolio Capstone Projects",
     "Plug-and-play 30-Day Content Calendar (Google Sheets)",
     "High-Ticket Client Proposal Deck (Canva + PDF)",
-    "Freelance Pricing & Retainer Calculator",
+    "Executive Monthly Analytics & Reporting Deck",
     "Direct Client Outreach Scripts (DM, Email, LinkedIn)",
     "Official Veshara Learn Course Completion Certificate",
     "Instant Lifetime Access with All Future Updates",

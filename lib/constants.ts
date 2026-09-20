@@ -240,7 +240,6 @@ export const INCLUSIONS = [
   "Real-World Hands-on Capstone Projects for every module",
   "Plug-and-play 30-Day Content Calendar (Google Sheets Template)",
   "High-Converting Client Proposal Template (Canva + PDF)",
-  "Freelance Pricing & Package Calculator (Custom Spreadsheet)",
   "Executive Monthly Analytics & Reporting Deck",
   "Direct Outreach Scripts for Instagram, LinkedIn & Email",
   "Official Veshara Learn Verified Course Completion Certificate",

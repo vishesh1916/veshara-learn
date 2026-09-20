@@ -40,13 +40,6 @@ export default function StudentResourcesPage() {
       desc: "Word-for-word scripts to pitch brand founders on Instagram DMs, LinkedIn, and cold email without sounding spammy.",
       link: "/resources/client-proposal-template",
     },
-    {
-      title: "Freelance Retainer & Pricing Calculator",
-      category: "Business Operations",
-      type: "Spreadsheet Tool",
-      desc: "Input your target monthly income and hours to calculate optimal hourly and monthly retainer rates for Indian clients.",
-      link: "/resources/30-day-content-calendar",
-    },
   ];
 
   return (
