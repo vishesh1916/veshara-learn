@@ -3,7 +3,7 @@
 import * as React from "react";
 import Script from "next/script";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { toast } from "sonner";
 import {
   Check,
@@ -13,6 +13,8 @@ import {
   Loader2,
   ArrowRight,
   UserCheck,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { COURSE, INCLUSIONS } from "@/lib/constants";
 import { Container } from "@/components/ui/Container";
@@ -32,8 +34,10 @@ export default function EnrollPage() {
     name: "",
     email: "",
     phone: "",
+    password: "",
   });
 
+  const [showPassword, setShowPassword] = React.useState(false);
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [razorpayReady, setRazorpayReady] = React.useState(false);
 
@@ -53,6 +57,11 @@ export default function EnrollPage() {
 
     if (!studentDetails.name || !studentDetails.email) {
       toast.error("Please enter your name and email.");
+      return;
+    }
+
+    if (!session?.user && (!studentDetails.password || studentDetails.password.trim().length < 6)) {
+      toast.error("Please enter a password of at least 6 characters for your student account.");
       return;
     }
 
@@ -110,6 +119,8 @@ export default function EnrollPage() {
                 razorpay_signature: response.razorpay_signature,
                 studentEmail: studentDetails.email,
                 studentName: studentDetails.name,
+                studentPhone: studentDetails.phone,
+                password: studentDetails.password,
               }),
             });
 
@@ -117,7 +128,25 @@ export default function EnrollPage() {
 
             if (verifyRes.ok && verifyData.success) {
               toast.success("Payment confirmed! Accessing your course...");
-              router.push(`/payment-success?payment_id=${response.razorpay_payment_id}`);
+
+              // Automatically sign in the student with their credentials
+              if (studentDetails.password) {
+                try {
+                  await signIn("credentials", {
+                    email: studentDetails.email,
+                    password: studentDetails.password,
+                    redirect: false,
+                  });
+                } catch (signErr) {
+                  console.warn("Auto sign-in notice:", signErr);
+                }
+              }
+
+              router.push(
+                `/payment-success?payment_id=${response.razorpay_payment_id}&email=${encodeURIComponent(
+                  studentDetails.email
+                )}`
+              );
             } else {
               router.push("/payment-failed");
             }
@@ -177,6 +206,20 @@ export default function EnrollPage() {
                 </div>
 
                 <form onSubmit={handlePayment} className="space-y-4">
+                  {session?.user && (
+                    <div className="p-3.5 bg-accent/20 border border-primary/20 rounded-xl flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-2 text-primary font-medium">
+                        <UserCheck className="w-4 h-4 text-primary shrink-0" />
+                        <span>
+                          Enrolling as <strong>{session.user.name || "Student"}</strong> ({session.user.email})
+                        </span>
+                      </div>
+                      <span className="font-mono text-[10px] uppercase font-bold bg-accent text-primary px-2 py-0.5 rounded border border-primary/20 shrink-0">
+                        Signed In
+                      </span>
+                    </div>
+                  )}
+
                   <div className="space-y-1.5">
                     <label className="block text-xs font-mono font-bold uppercase tracking-wider text-primary">
                       Full Name *
@@ -226,6 +269,42 @@ export default function EnrollPage() {
                       className="w-full rounded-lg border border-border-custom bg-white px-4 py-3 text-sm text-primary placeholder:text-secondary focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary shadow-subtle"
                     />
                   </div>
+
+                  {/* Student Account Password (if not already logged in) */}
+                  {!session?.user && (
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between">
+                        <label className="block text-xs font-mono font-bold uppercase tracking-wider text-primary">
+                          Create Account Password *
+                        </label>
+                        <span className="text-[11px] text-secondary font-mono">Min. 6 characters</span>
+                      </div>
+                      <div className="relative">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          required
+                          minLength={6}
+                          placeholder="••••••••"
+                          value={studentDetails.password}
+                          onChange={(e) =>
+                            setStudentDetails({ ...studentDetails, password: e.target.value })
+                          }
+                          className="w-full rounded-lg border border-border-custom bg-white px-4 py-3 text-sm text-primary placeholder:text-secondary focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary shadow-subtle pr-11"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-3.5 text-secondary hover:text-primary transition-colors cursor-pointer"
+                          aria-label={showPassword ? "Hide password" : "Show password"}
+                        >
+                          {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
+                      <p className="text-[11px] text-secondary">
+                        You will use this password + your email to log in to your student dashboard anytime.
+                      </p>
+                    </div>
+                  )}
 
                   {/* Trust Banner */}
                   <div className="p-3.5 bg-[#F5F3EE] rounded-xl border border-border-custom flex items-center gap-3 text-xs text-secondary">

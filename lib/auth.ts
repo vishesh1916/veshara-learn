@@ -69,8 +69,16 @@ export const authOptions: NextAuthOptions = {
           if (user.passwordHash) {
             const isValid = await bcrypt.compare(credentials.password, user.passwordHash);
             if (!isValid) {
-              throw new Error("Invalid password for this existing account.");
+              throw new Error("Invalid password. Please check your password or reset it.");
             }
+          } else {
+            // Student account was created during payment without a password.
+            // Automatically set this password as their new permanent password!
+            const newPasswordHash = await bcrypt.hash(credentials.password, 10);
+            await prisma.user.update({
+              where: { id: user.id },
+              data: { passwordHash: newPasswordHash },
+            });
           }
 
           return {

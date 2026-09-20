@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function PaymentSuccessPage({
   searchParams,
 }: {
-  searchParams: { payment_id?: string };
+  searchParams: { payment_id?: string; email?: string };
 }) {
   return (
     <div className="bg-cream py-20 md:py-32">
@@ -36,8 +36,18 @@ export default function PaymentSuccessPage({
             Welcome to Veshara Learn. Your Social Media Manager journey starts now. Your course access has been unlocked in your dashboard.
           </p>
 
+          {searchParams?.email && (
+            <div className="p-4 bg-accent/20 border border-primary/20 rounded-2xl max-w-md mx-auto text-xs text-primary space-y-1 text-center">
+              <p className="font-bold text-sm">Student Account Active & Ready</p>
+              <p className="font-mono text-secondary font-semibold">{searchParams.email}</p>
+              <p className="text-[11px] text-secondary pt-0.5">
+                Your course is unlocked. You can sign in anytime using your email and password.
+              </p>
+            </div>
+          )}
+
           {searchParams?.payment_id && (
-            <div className="p-3 bg-[#F5F3EE] rounded-lg border border-border-custom max-w-xs mx-auto text-xs font-mono text-secondary">
+            <div className="p-2.5 bg-[#F5F3EE] rounded-lg border border-border-custom max-w-xs mx-auto text-[11px] font-mono text-secondary">
               Reference ID: {searchParams.payment_id}
             </div>
           )}

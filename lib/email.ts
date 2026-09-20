@@ -101,6 +101,11 @@ export async function sendPurchaseConfirmationEmail(
             <span style="color: #74736D; font-size: 14px;">Payment Reference</span>
             <span style="color: #74736D; font-size: 13px; font-family: monospace;">${paymentId}</span>
           </div>
+          <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid #F5F3EE;">
+            <p style="margin: 0 0 4px 0; font-size: 13px; color: #11110F; font-weight: 700;">Your Student Login:</p>
+            <p style="margin: 0; font-size: 13px; color: #74736D;">Email: <strong>${email}</strong></p>
+            <p style="margin: 4px 0 0 0; font-size: 12px; color: #74736D;">Sign in anytime using your email and the password created at checkout.</p>
+          </div>
         </div>
 
         <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/dashboard" 

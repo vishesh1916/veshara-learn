@@ -12,8 +12,9 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+  const paramEmail = searchParams.get("email") || "";
 
-  const [email, setEmail] = React.useState("");
+  const [email, setEmail] = React.useState(paramEmail);
   const [password, setPassword] = React.useState("");
   const [loading, setLoading] = React.useState(false);
 

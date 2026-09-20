@@ -22,8 +22,30 @@ export async function POST(request: Request) {
     });
 
     if (existing) {
+      if (!existing.passwordHash) {
+        // User enrolled during checkout without password - complete their account setup!
+        const passwordHash = await bcrypt.hash(password, 10);
+        const updated = await prisma.user.update({
+          where: { id: existing.id },
+          data: {
+            name: existing.name || name,
+            phone: existing.phone || phone,
+            passwordHash,
+          },
+        });
+        return NextResponse.json({
+          success: true,
+          user: {
+            id: updated.id,
+            name: updated.name,
+            email: updated.email,
+            role: updated.role,
+          },
+        });
+      }
+
       return NextResponse.json(
-        { error: "An account already exists with this email address." },
+        { error: "An account already exists with this email address. Please sign in instead." },
         { status: 409 }
       );
     }

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
+import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { sendPurchaseConfirmationEmail } from "@/lib/email";
 import { COURSE } from "@/lib/constants";
@@ -12,6 +13,8 @@ export async function POST(request: Request) {
       razorpay_signature,
       studentEmail,
       studentName,
+      studentPhone,
+      password,
     } = await request.json();
 
     const secret = process.env.RAZORPAY_KEY_SECRET || "";
@@ -43,14 +46,40 @@ export async function POST(request: Request) {
           where: { email: normalizedEmail },
         });
 
+        let passwordHash: string | undefined = undefined;
+        if (password && password.trim().length >= 6) {
+          passwordHash = await bcrypt.hash(password.trim(), 10);
+        }
+
         if (!user) {
           user = await prisma.user.create({
             data: {
               name: studentName || "Student Learner",
               email: normalizedEmail,
+              phone: studentPhone || null,
+              passwordHash: passwordHash || null,
               role: "STUDENT",
             },
           });
+        } else {
+          // If user exists, update phone or password if newly provided
+          const updateData: any = {};
+          if (studentName && (!user.name || user.name === "Student Learner")) {
+            updateData.name = studentName;
+          }
+          if (studentPhone && !user.phone) {
+            updateData.phone = studentPhone;
+          }
+          if (passwordHash && (!user.passwordHash || passwordHash)) {
+            updateData.passwordHash = passwordHash;
+          }
+
+          if (Object.keys(updateData).length > 0) {
+            user = await prisma.user.update({
+              where: { id: user.id },
+              data: updateData,
+            });
+          }
         }
 
         const course = await prisma.course.findFirst({
