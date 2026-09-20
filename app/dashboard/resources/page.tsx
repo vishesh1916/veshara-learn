@@ -34,13 +34,6 @@ export default function StudentResourcesPage() {
       link: "/resources/social-media-audit-checklist",
     },
     {
-      title: "50 Plug-and-Play High-Engagement Content Ideas",
-      category: "Copywriting",
-      type: "PDF Guide",
-      desc: "Categorized swipe file of 50 proven hooks and post formats ready to copy-paste into your monthly schedule.",
-      link: "/resources/50-social-media-content-ideas",
-    },
-    {
       title: "Cold Outreach DM & Email Scripts Pack",
       category: "Client Acquisition",
       type: "Word / Google Doc",

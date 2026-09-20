@@ -9,7 +9,7 @@ import { LeadCapture } from "@/components/shared/LeadCapture";
 
 export const metadata: Metadata = {
   title: "Free Social Media Management Resources & Templates | Veshara Learn",
-  description: "Free downloadable templates: 30-Day Content Calendar, 50 Content Ideas, Client Proposal Template, and SMM Audit Checklist.",
+  description: "Free downloadable templates: 30-Day Master Content Calendar, Client Proposal Template, and SMM Audit Checklist.",
 };
 
 export default function ResourcesPage() {

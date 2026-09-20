@@ -55,7 +55,6 @@ export const FOOTER_LINKS = {
     { label: "Contact Us", href: "/contact" },
   ],
   resources: [
-    { label: "50 Content Ideas", href: "/resources/50-social-media-content-ideas" },
     { label: "30-Day Content Calendar", href: "/resources/30-day-content-calendar" },
     { label: "SMM Audit Checklist", href: "/resources/social-media-audit-checklist" },
     { label: "Client Proposal Template", href: "/resources/client-proposal-template" },
@@ -392,20 +391,6 @@ export const FAQS = [
 ] as const;
 
 export const FREE_RESOURCES = [
-  {
-    slug: "50-social-media-content-ideas",
-    title: "50 High-Engagement Content Ideas",
-    category: "Content Strategy",
-    description: "Never suffer from creator block. A curated list of 50 proven post concepts categorized across education, authority, engagement, and conversion.",
-    type: "PDF Guide",
-    badge: "Free Download",
-    benefits: [
-      "Categorized by the 4 Core Content Pillars",
-      "Includes 10 thumb-stopping visual hook templates",
-      "Directly applicable to Instagram, LinkedIn, and X",
-      "Ready to copy-paste into your weekly calendar",
-    ],
-  },
   {
     slug: "30-day-content-calendar",
     title: "30-Day Master Content Calendar",
